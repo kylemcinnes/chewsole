@@ -27,18 +27,52 @@ export default function ProductPage() {
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [currentImageIdx, setCurrentImageIdx] = useState(0);
+  const [mounted, setMounted] = useState(false);
   
   const addItem = useCartStore((state) => state.addItem);
   const router = useRouter();
   
   useEffect(() => {
+    setMounted(true);
+    
+    // Fallback product data in case database is unavailable
+    const fallbackProduct: Product = {
+      id: 'fallback-1',
+      slug: 'chewsole',
+      title: 'ChewSole Flip-Flop Gum',
+      subtitle: 'Pre-Launch Edition',
+      description: "The world's first gum made from 100% recycled flip-flops. Each piece is crafted from ocean-recovered rubber, transformed into a revolutionary chewing experience. Tired of gum that loses its chew? Not Flip-Flop Gum. From beach to chew.",
+      images: [
+        'https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80',
+        'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80',
+        'https://images.unsplash.com/photo-1609973278811-1e958fc0b104?w=800&q=80',
+      ],
+      flavors: ['Ocean Mint', 'Bubble Reef', 'Lemon Tread', 'Tropical Toe', 'Midnight Asphalt'],
+      price: 499,
+    };
+    
     fetch('/api/products/chewsole')
-      .then((res) => res.json())
-      .then((data) => {
-        setProduct(data);
-        setSelectedFlavor(data.flavors[0]);
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Product not found');
+        }
+        return res.json();
       })
-      .catch(console.error);
+      .then((data) => {
+        if (data && data.flavors && Array.isArray(data.flavors) && data.flavors.length > 0) {
+          setProduct(data);
+          setSelectedFlavor(data.flavors[0]);
+        } else {
+          // Use fallback if data is invalid
+          setProduct(fallbackProduct);
+          setSelectedFlavor(fallbackProduct.flavors[0]);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch product, using fallback:', error);
+        setProduct(fallbackProduct);
+        setSelectedFlavor(fallbackProduct.flavors[0]);
+      });
   }, []);
   
   const handleAddToCart = () => {
@@ -57,7 +91,7 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
   
-  if (!product) {
+  if (!mounted || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-accent text-lg">Loading...</div>
@@ -78,6 +112,7 @@ export default function ProductPage() {
                 alt={product.title}
                 fill
                 className="object-cover"
+                unoptimized
               />
               <div className="absolute top-4 right-4">
                 <Badge className="bg-accent text-accent-foreground">Pre-Launch</Badge>
@@ -94,7 +129,7 @@ export default function ProductPage() {
                     idx === currentImageIdx ? 'border-accent' : 'border-border'
                   }`}
                 >
-                  <Image src={img} alt={`${product.title} ${idx + 1}`} fill className="object-cover" />
+                  <Image src={img} alt={`${product.title} ${idx + 1}`} fill className="object-cover" unoptimized />
                 </button>
               ))}
             </div>

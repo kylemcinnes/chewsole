@@ -28,6 +28,7 @@ export function ProductCard({ slug, title, subtitle, image, price }: ProductCard
             alt={title}
             fill
             className="object-cover"
+            unoptimized
           />
           <div className="absolute top-4 right-4">
             <Badge className="bg-accent text-accent-foreground">Pre-Launch</Badge>
