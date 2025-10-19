@@ -1,0 +1,12 @@
+# ChewSole - Satirical Project
+# This is a demonstration website for educational purposes
+
+User-agent: *
+Allow: /
+
+# Admin pages
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://chewsole.com/sitemap.xml
+

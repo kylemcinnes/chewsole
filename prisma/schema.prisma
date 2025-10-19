@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model OrderLead {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  name       String
+  email      String
+  address1   String
+  address2   String?
+  city       String
+  region     String
+  postalCode String
+  country    String
+  items      String   // JSON string: [{ sku, flavor, qty }]
+  consent    Boolean  // marketing & prelaunch hold
+  notes      String?
+}
+
+model Product {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  subtitle    String?
+  description String
+  images      String  // JSON string array
+  flavors     String  // JSON string array
+  price       Int     // shown as "MSRP", not charged (in cents)
+  active      Boolean @default(true)
+}
+
+model Slogan {
+  id     String  @id @default(cuid())
+  text   String
+  active Boolean @default(true)
+  weight Int     @default(1)
+}
+
+model SiteSettings {
+  id               Int     @id @default(1)
+  brandName        String  @default("ChewSole")
+  heroVideoUrl     String?
+  primaryAccentHex String  @default("#28e0b9")
+  enableMarquee    Boolean @default(true)
+}
