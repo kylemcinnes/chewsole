@@ -1,0 +1,87 @@
+════════════════════════════════════════════════════════════════
+  CLOUDFLARE PAGES SETTINGS FOR CHEWSOLE
+════════════════════════════════════════════════════════════════
+
+📍 Go to: Cloudflare Dashboard → Pages → chewsole → Settings
+
+────────────────────────────────────────────────────────────────
+  BUILDS & DEPLOYMENTS
+────────────────────────────────────────────────────────────────
+
+Framework preset:
+  [Select] Next.js
+
+Build command:
+  npx @cloudflare/next-on-pages
+
+Build output directory:
+  .vercel/output/static
+
+Root directory (advanced):
+  /
+
+────────────────────────────────────────────────────────────────
+  ENVIRONMENT VARIABLES
+────────────────────────────────────────────────────────────────
+
+Variable name: NODE_VERSION
+Value: 20
+
+Variable name: ADMIN_PASSWORD  
+Value: ChewSole2025!SecureAdmin
+
+Variable name: DATABASE_URL
+Value: [See database options below]
+
+────────────────────────────────────────────────────────────────
+  FUNCTIONS (Settings → Functions)
+────────────────────────────────────────────────────────────────
+
+Compatibility flags:
+  nodejs_compat
+
+Compatibility date:
+  2024-10-01
+
+────────────────────────────────────────────────────────────────
+  DATABASE OPTIONS
+────────────────────────────────────────────────────────────────
+
+❌ SQLite file-based (./dev.db) - WON'T WORK on serverless
+
+✅ Option 1: Turso (Free, easiest)
+   1. Sign up: https://turso.tech
+   2. Create database: chewsole
+   3. Get URL: libsql://chewsole-xyz.turso.io
+   4. Get token from dashboard
+   5. Set DATABASE_URL and TURSO_AUTH_TOKEN
+
+✅ Option 2: Cloudflare D1 (Free, more setup)
+   1. Create D1 database in Cloudflare
+   2. Bind to Pages project
+   3. Update Prisma schema for D1
+   4. Requires code changes
+
+✅ Option 3: Neon (Free PostgreSQL)
+   1. Sign up: https://neon.tech
+   2. Create project
+   3. Copy connection string
+   4. Update Prisma to use postgresql
+
+────────────────────────────────────────────────────────────────
+  QUICK FIX: Use Vercel Instead
+────────────────────────────────────────────────────────────────
+
+Honestly? Just use Vercel:
+
+1. Go to vercel.com
+2. Import kylemcinnes/chewsole from GitHub
+3. Add ADMIN_PASSWORD environment variable
+4. Click Deploy
+5. Done in 2 minutes
+
+Vercel is built FOR Next.js. Cloudflare is built for static sites.
+Your app has API routes and database = Vercel is the right choice.
+
+════════════════════════════════════════════════════════════════
+
