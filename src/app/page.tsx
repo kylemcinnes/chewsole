@@ -28,7 +28,7 @@ export default function HomePage() {
               slug="chewsole"
               title="ChewSole Flip-Flop Gum"
               subtitle="Pre-Launch Edition"
-              image="https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80"
+              image="/images/product-1.svg"
               price={499}
             />
           </div>

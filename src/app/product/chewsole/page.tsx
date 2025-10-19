@@ -28,9 +28,9 @@ const fallbackProduct: Product = {
   subtitle: 'Pre-Launch Edition',
   description: "The world's first gum made from 100% recycled flip-flops. Each piece is crafted from ocean-recovered rubber, transformed into a revolutionary chewing experience. Tired of gum that loses its chew? Not Flip-Flop Gum. From beach to chew.",
   images: [
-    'https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80',
-    'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80',
-    'https://images.unsplash.com/photo-1609973278811-1e958fc0b104?w=800&q=80',
+    '/images/product-1.svg',
+    '/images/product-2.svg',
+    '/images/product-3.svg',
   ],
   flavors: ['Ocean Mint', 'Bubble Reef', 'Lemon Tread', 'Tropical Toe', 'Midnight Asphalt'],
   price: 499,

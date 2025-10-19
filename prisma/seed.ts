@@ -46,9 +46,9 @@ async function main() {
 
   // Seed Products
   const productImages = [
-    'https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80',
-    'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80',
-    'https://images.unsplash.com/photo-1609973278811-1e958fc0b104?w=800&q=80',
+    '/images/product-1.svg',
+    '/images/product-2.svg',
+    '/images/product-3.svg',
   ];
 
   const flavors = [
