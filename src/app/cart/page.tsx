@@ -4,7 +4,6 @@ import { useCartStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Trash2, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -59,7 +58,7 @@ export default function CartPage() {
               <Card key={`${item.sku}-${item.flavor}`} className="p-6">
                 <div className="flex gap-6">
                   <div className="relative h-24 w-24 flex-shrink-0 rounded-md overflow-hidden">
-                    <Image src={item.image} alt={item.title} fill className="object-cover" />
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                   </div>
                   
                   <div className="flex-1">

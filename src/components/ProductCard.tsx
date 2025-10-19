@@ -5,7 +5,6 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface ProductCardProps {
   slug: string;
@@ -23,12 +22,10 @@ export function ProductCard({ slug, title, subtitle, image, price }: ProductCard
     >
       <Card className="overflow-hidden border-border hover:border-accent/50 transition-all">
         <div className="relative h-64 bg-card overflow-hidden">
-          <Image
+          <img
             src={image}
             alt={title}
-            fill
-            className="object-cover"
-            unoptimized
+            className="w-full h-full object-cover"
           />
           <div className="absolute top-4 right-4">
             <Badge className="bg-accent text-accent-foreground">Pre-Launch</Badge>

@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { useCartStore } from '@/lib/store';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, Check } from 'lucide-react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 interface Product {
@@ -106,12 +105,10 @@ export default function ProductPage() {
           <div>
             <div className="relative h-[500px] rounded-lg overflow-hidden mb-4 bg-card">
               {product.images && product.images.length > 0 && (
-                <Image
+                <img
                   src={product.images[currentImageIdx] || product.images[0]}
                   alt={product.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
+                  className="w-full h-full object-cover"
                 />
               )}
               <div className="absolute top-4 right-4">
@@ -129,7 +126,7 @@ export default function ProductPage() {
                     idx === currentImageIdx ? 'border-accent' : 'border-border'
                   }`}
                 >
-                  <Image src={img} alt={`${product.title} ${idx + 1}`} fill className="object-cover" unoptimized />
+                  <img src={img} alt={`${product.title} ${idx + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
