@@ -9,8 +9,20 @@ export const metadata = {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+interface ParsedProduct {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  description: string;
+  images: string[];
+  flavors: string[];
+  price: number;
+  active: boolean;
+}
+
 export default async function ShopPage() {
-  let parsedProducts = [];
+  let parsedProducts: ParsedProduct[] = [];
   
   try {
     const products = await db.product.findMany({
