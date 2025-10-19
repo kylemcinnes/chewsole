@@ -21,9 +21,26 @@ interface Product {
   price: number;
 }
 
+// Fallback product data - defined outside component to ensure it's always available
+const fallbackProduct: Product = {
+  id: 'fallback-1',
+  slug: 'chewsole',
+  title: 'ChewSole Flip-Flop Gum',
+  subtitle: 'Pre-Launch Edition',
+  description: "The world's first gum made from 100% recycled flip-flops. Each piece is crafted from ocean-recovered rubber, transformed into a revolutionary chewing experience. Tired of gum that loses its chew? Not Flip-Flop Gum. From beach to chew.",
+  images: [
+    'https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80',
+    'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80',
+    'https://images.unsplash.com/photo-1609973278811-1e958fc0b104?w=800&q=80',
+  ],
+  flavors: ['Ocean Mint', 'Bubble Reef', 'Lemon Tread', 'Tropical Toe', 'Midnight Asphalt'],
+  price: 499,
+};
+
 export default function ProductPage() {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [selectedFlavor, setSelectedFlavor] = useState('');
+  // Initialize with fallback product immediately to prevent undefined errors
+  const [product, setProduct] = useState<Product>(fallbackProduct);
+  const [selectedFlavor, setSelectedFlavor] = useState(fallbackProduct.flavors[0]);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [currentImageIdx, setCurrentImageIdx] = useState(0);
@@ -35,22 +52,7 @@ export default function ProductPage() {
   useEffect(() => {
     setMounted(true);
     
-    // Fallback product data in case database is unavailable
-    const fallbackProduct: Product = {
-      id: 'fallback-1',
-      slug: 'chewsole',
-      title: 'ChewSole Flip-Flop Gum',
-      subtitle: 'Pre-Launch Edition',
-      description: "The world's first gum made from 100% recycled flip-flops. Each piece is crafted from ocean-recovered rubber, transformed into a revolutionary chewing experience. Tired of gum that loses its chew? Not Flip-Flop Gum. From beach to chew.",
-      images: [
-        'https://images.unsplash.com/photo-1582212928585-39f9f0a7c540?w=800&q=80',
-        'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=80',
-        'https://images.unsplash.com/photo-1609973278811-1e958fc0b104?w=800&q=80',
-      ],
-      flavors: ['Ocean Mint', 'Bubble Reef', 'Lemon Tread', 'Tropical Toe', 'Midnight Asphalt'],
-      price: 499,
-    };
-    
+    // Try to fetch real product data
     fetch('/api/products/chewsole')
       .then((res) => {
         if (!res.ok) {
@@ -59,19 +61,15 @@ export default function ProductPage() {
         return res.json();
       })
       .then((data) => {
-        if (data && data.flavors && Array.isArray(data.flavors) && data.flavors.length > 0) {
+        if (data && data.flavors && Array.isArray(data.flavors) && data.flavors.length > 0 && data.images && Array.isArray(data.images)) {
           setProduct(data);
           setSelectedFlavor(data.flavors[0]);
-        } else {
-          // Use fallback if data is invalid
-          setProduct(fallbackProduct);
-          setSelectedFlavor(fallbackProduct.flavors[0]);
         }
+        // If data is invalid, keep using fallback (already set in useState)
       })
       .catch((error) => {
         console.error('Failed to fetch product, using fallback:', error);
-        setProduct(fallbackProduct);
-        setSelectedFlavor(fallbackProduct.flavors[0]);
+        // Fallback is already set, no action needed
       });
   }, []);
   
@@ -91,7 +89,7 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
   
-  if (!mounted || !product) {
+  if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-accent text-lg">Loading...</div>
