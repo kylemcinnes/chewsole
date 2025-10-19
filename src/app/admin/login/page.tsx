@@ -28,7 +28,9 @@ export default function AdminLoginPage() {
       });
       
       if (response.ok) {
-        sessionStorage.setItem('admin_password', password);
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('admin_password', password);
+        }
         router.push('/admin');
       } else {
         setError('Invalid password');

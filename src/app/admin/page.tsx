@@ -24,6 +24,9 @@ export default function AdminPage() {
   const router = useRouter();
   
   useEffect(() => {
+    // Only access sessionStorage in browser
+    if (typeof window === 'undefined') return;
+    
     const password = sessionStorage.getItem('admin_password');
     if (!password) {
       router.push('/admin/login');
@@ -58,6 +61,7 @@ export default function AdminPage() {
   
   
   const handleExport = async () => {
+    if (typeof window === 'undefined') return;
     const password = sessionStorage.getItem('admin_password');
     if (!password) return;
     
@@ -88,6 +92,7 @@ export default function AdminPage() {
   };
   
   const handleLogout = () => {
+    if (typeof window === 'undefined') return;
     sessionStorage.removeItem('admin_password');
     router.push('/admin/login');
   };
