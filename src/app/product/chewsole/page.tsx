@@ -107,13 +107,15 @@ export default function ProductPage() {
           {/* Images */}
           <div>
             <div className="relative h-[500px] rounded-lg overflow-hidden mb-4 bg-card">
-              <Image
-                src={product.images[currentImageIdx]}
-                alt={product.title}
-                fill
-                className="object-cover"
-                unoptimized
-              />
+              {product.images && product.images.length > 0 && (
+                <Image
+                  src={product.images[currentImageIdx] || product.images[0]}
+                  alt={product.title}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              )}
               <div className="absolute top-4 right-4">
                 <Badge className="bg-accent text-accent-foreground">Pre-Launch</Badge>
               </div>
@@ -121,7 +123,7 @@ export default function ProductPage() {
             
             {/* Thumbnail Gallery */}
             <div className="flex gap-2">
-              {product.images.map((img, idx) => (
+              {product.images && Array.isArray(product.images) && product.images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentImageIdx(idx)}
@@ -153,11 +155,15 @@ export default function ProductPage() {
             {/* Flavor Selection */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-4">Select Flavor</h3>
-              <FlavorCarousel
-                flavors={product.flavors}
-                selectedFlavor={selectedFlavor}
-                onSelectFlavor={setSelectedFlavor}
-              />
+              {product.flavors && Array.isArray(product.flavors) && product.flavors.length > 0 ? (
+                <FlavorCarousel
+                  flavors={product.flavors}
+                  selectedFlavor={selectedFlavor}
+                  onSelectFlavor={setSelectedFlavor}
+                />
+              ) : (
+                <p className="text-muted-foreground">Loading flavors...</p>
+              )}
             </div>
             
             {/* Quantity */}

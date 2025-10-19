@@ -18,6 +18,15 @@ const flavorColors: Record<string, string> = {
 };
 
 export function FlavorCarousel({ flavors, selectedFlavor, onSelectFlavor }: FlavorCarouselProps) {
+  // Defensive check - ensure flavors is an array
+  if (!Array.isArray(flavors) || flavors.length === 0) {
+    return (
+      <div className="text-center text-muted-foreground py-4">
+        No flavors available
+      </div>
+    );
+  }
+  
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       {flavors.map((flavor) => {
