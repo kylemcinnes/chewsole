@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
+interface ProductData {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  images: string[];
+  flavors: string[];
+  price: number;
+  active: boolean;
+}
+
 // Fallback product data
-const fallbackProducts: Record<string, any> = {
+const fallbackProducts: Record<string, ProductData> = {
   chewsole: {
     id: 'fallback-chewsole',
     slug: 'chewsole',
