@@ -11,16 +11,43 @@ interface Slogan {
 
 export function Marquee() {
   const [slogans, setSlogans] = useState<Slogan[]>([]);
+  const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
+    setMounted(true);
     fetch('/api/slogans')
       .then((res) => res.json())
-      .then((data) => setSlogans(data))
-      .catch(console.error);
+      .then((data) => {
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setSlogans(data);
+        } else {
+          console.error('Slogans API did not return an array:', data);
+          setSlogans([]);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch slogans:', error);
+        setSlogans([]);
+      });
   }, []);
   
-  // Duplicate slogans for seamless loop
-  const displaySlogans = [...slogans, ...slogans, ...slogans];
+  // Don't render until mounted to prevent SSR issues
+  if (!mounted) {
+    return <div className="bg-accent text-accent-foreground py-3 h-12" />;
+  }
+  
+  // Fallback slogans if API fails
+  const fallbackSlogans: Slogan[] = [
+    { id: 'fallback-1', text: 'Save the planet! Chew flip-flops!', active: true, weight: 1 },
+    { id: 'fallback-2', text: 'From beach to chew.', active: true, weight: 1 },
+    { id: 'fallback-3', text: 'The planet\'s first gum with real sole.', active: true, weight: 1 },
+  ];
+  
+  const activeSlogans = slogans.length > 0 ? slogans : fallbackSlogans;
+  
+  // Duplicate slogans for seamless loop - ensure it's an array
+  const displaySlogans = [...activeSlogans, ...activeSlogans, ...activeSlogans];
   
   return (
     <div className="bg-accent text-accent-foreground py-3 overflow-hidden relative">
