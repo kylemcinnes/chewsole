@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,9 +16,14 @@ export default function CheckoutPage() {
   const { items, getTotal, clearCart } = useCartStore();
   const router = useRouter();
   
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -73,6 +78,15 @@ export default function CheckoutPage() {
   };
   
   const total = getTotal();
+  
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-accent">Loading...</div>
+      </div>
+    );
+  }
   
   if (items.length === 0 && !success) {
     router.push('/cart');

@@ -6,16 +6,26 @@ export const metadata = {
   description: 'Browse our revolutionary flip-flop gum collection. 100% recycled. 0% guilt.',
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function ShopPage() {
-  const products = await db.product.findMany({
-    where: { active: true },
-  });
+  let parsedProducts = [];
   
-  const parsedProducts = products.map((p) => ({
-    ...p,
-    images: JSON.parse(p.images) as string[],
-    flavors: JSON.parse(p.flavors) as string[],
-  }));
+  try {
+    const products = await db.product.findMany({
+      where: { active: true },
+    });
+    
+    parsedProducts = products.map((p) => ({
+      ...p,
+      images: JSON.parse(p.images) as string[],
+      flavors: JSON.parse(p.flavors) as string[],
+    }));
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    // Return empty array if database fails
+  }
   
   return (
     <div className="min-h-screen py-20">
@@ -53,4 +63,3 @@ export default async function ShopPage() {
     </div>
   );
 }
-
