@@ -6,10 +6,25 @@ import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Trash2, ShoppingBag } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function CartPage() {
   const { items, removeItem, updateQty, getTotal } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   const total = getTotal();
+  
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center py-20">
+        <div className="animate-pulse text-accent">Loading cart...</div>
+      </div>
+    );
+  }
   
   if (items.length === 0) {
     return (

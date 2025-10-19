@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface CartItem {
   sku: string;
@@ -78,6 +78,18 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'chewsole-cart',
+      storage: createJSONStorage(() => {
+        // Only use localStorage in browser environment
+        if (typeof window !== 'undefined') {
+          return localStorage;
+        }
+        // Return a no-op storage for SSR
+        return {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        };
+      }),
     }
   )
 );
